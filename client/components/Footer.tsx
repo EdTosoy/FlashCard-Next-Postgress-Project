@@ -29,7 +29,7 @@ export default function Footer() {
     <footer className="grid-container bg-gray-100 pt-20 pb-10">
       <main className="col-start-2 col-end-3 grid md:grid-cols-4 text-gray-700 ">
         {footerLink.map(({ title, sub1, sub2, sub3, sub4, sub5 }) => (
-          <div className="capitalize mb-4">
+          <div className="capitalize mb-4" key={title}>
             <h1 className="mb-2 font-semibold text-lg ">{title}</h1>
             <div className="cursor-pointer">
               <p className="hover:text-red-400">{sub1}</p>

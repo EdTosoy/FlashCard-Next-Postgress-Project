@@ -22,7 +22,7 @@ a {
   scroll-behavior: smooth;
   transition: all 0.3s;
   box-sizing: border-box;
-  /* border: 1px dashed green; */
+  border: 1px dashed green;
 }
 
 .grid-container {

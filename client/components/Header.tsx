@@ -1,5 +1,30 @@
+import { useRouter } from "next/dist/client/router";
+import Link from "next/link";
+
 export default function Header() {
-  const nav = ["home", "category", "shop", "blog", "contact"];
+  const nav = [
+    {
+      name: "home",
+      pathname: "/",
+    },
+    {
+      name: "category",
+      pathname: "/#category",
+    },
+    {
+      name: "shop",
+      pathname: "/shop",
+    },
+    {
+      name: "blog",
+      pathname: "blog",
+    },
+
+    {
+      name: "contact",
+      pathname: "/#contact",
+    },
+  ];
   const icons = ["menu", "cart", "user-circle"];
   return (
     <header
@@ -11,9 +36,11 @@ export default function Header() {
           <a href="#">PHONE</a>
         </div>
         <div className="hidden md:flex ">
-          {nav.map((element) => (
-            <nav key={element} className="uppercase ml-8 hover:text-red-600 ">
-              <a href={`#${element}`}>{element}</a>
+          {nav.map(({ name, pathname }) => (
+            <nav key={name} className="uppercase ml-8 hover:text-red-600 ">
+              <Link href={`${pathname}`}>
+                <a>{name}</a>
+              </Link>
             </nav>
           ))}
         </div>
@@ -25,7 +52,9 @@ export default function Header() {
               } grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
               key={element}
             >
-              <box-icon name={element}></box-icon>
+              <Link href="/login">
+                <box-icon name={element}></box-icon>
+              </Link>
             </div>
           ))}
         </div>

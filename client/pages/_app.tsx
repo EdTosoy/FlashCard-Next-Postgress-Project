@@ -1,6 +1,8 @@
 import "../styles/globals.css";
+import "swiper/swiper.scss";
 
 import "tailwindcss/tailwind.css";
+
 
 import type { AppProps /*, AppContext */ } from "next/app";
 import Head from "next/head";

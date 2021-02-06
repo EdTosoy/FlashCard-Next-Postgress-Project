@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 export default function Hero() {
   return (
     <section className=" pt-10 pb-20 ">
@@ -17,7 +18,9 @@ export default function Hero() {
               and more.
             </p>
             <button className="rounded-full shadow-2xl transform hover:scale-105  py-3 px-5 bg-gradient-to-tr from-purple-600 to-red-400 text-white ">
-              SHOW ME MORE
+              <Link href="/shop">
+                <a>SHOW ME MORE</a>
+              </Link>
             </button>
           </div>
           <div className="hidden md:block">
