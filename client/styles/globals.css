@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;600;700&display=swap");
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Montserrat, sans-serif, -apple-system, BlinkMacSystemFont,
+    Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+    Helvetica Neue;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  scroll-behavior: smooth;
+  transition: all 0.3s;
+  box-sizing: border-box;
+  /* border: 1px dashed green; */
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: minmax(1rem, 1fr) minmax(1rem, 1050px) minmax(
+      1rem,
+      1fr
+    );
+}
