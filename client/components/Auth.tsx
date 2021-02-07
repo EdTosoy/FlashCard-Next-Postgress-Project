@@ -1,10 +1,51 @@
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import {
+  useLoginMutation,
+  useRegisterMutation,
+} from "../generated/graphql";
+import { setAccessToken } from "../lib/accessToken";
 export default function Auth() {
   const [registration, setRegistration] = useState(false);
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [login, { error: loginError }] = useLoginMutation();
+  const [register, { error: registerError }] = useRegisterMutation();
+  const handleLoginSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await login({
+      variables: {
+        password,
+        email,
+      },
+    });
+    if (response.data?.login) {
+      setAccessToken(response.data.login.accessToken);
+    }
+
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    console.log(response);
+  };
+  const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const response = await register({
+      variables: {
+        password,
+        email,
+        username,
+      },
+    });
+
+    setEmail("");
+    setPassword("");
+    setUsername("");
+    console.log(response);
+  };
+
   return (
     <div className="grid-container">
       <main className="col-start-2 col-end-3 grid place-content-center text-center  ">
@@ -14,27 +55,35 @@ export default function Auth() {
             Create apps, connect databases and add-on services, and collaborate
             on your apps, for free
           </p>
-          <form className="text-left text-xl">
+          <form
+            className="text-left text-xl"
+            onSubmit={registration ? handleRegisterSubmit : handleLoginSubmit}
+          >
             {registration && (
               <div className="">
                 <label htmlFor="username">USERNAME</label>
                 <input
                   type="text"
                   name="username"
+                  value={username}
                   id="username"
                   required={true}
                   className="block p-2 rounded-md my-2 w-full"
                   placeholder="JohnDoe32"
-                  onChange={(e) => setUsername(e.target.value ) }
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
             )}
+            {loginError?.message && (
+              <div className="block">{loginError.message}</div>
+            )}
             <label htmlFor="email">EMAIL</label>
             <input
-              type="email"
+              type="text"
               name="email"
+              value={email}
               id="email"
-              required={true}
+              // required={true}
               className="block p-2 rounded-md my-2 w-full"
               placeholder="JohnDoe32@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
@@ -43,6 +92,7 @@ export default function Auth() {
             <input
               type="password"
               name="password"
+              value={password}
               id="password"
               className="block p-2 rounded-md my-2 w-full"
               onChange={(e) => setPassword(e.target.value)}
@@ -60,7 +110,10 @@ export default function Auth() {
               </div>
               <p>Forget Password?</p>
             </div>
-            <button className="w-full p-3 rounded-md mt-5 bg-purple-800 hover:bg-purple-700  text-white ">
+            <button
+              className="w-full p-3 rounded-md mt-5 bg-purple-800 hover:bg-purple-700  text-white "
+              type="submit"
+            >
               {registration ? "Sign Up Free Account" : "Login Your Account"}
             </button>
             <button

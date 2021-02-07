@@ -1,0 +1,8 @@
+mutation AddToCart(
+  $username: String!
+  $price: String!
+  $name: String!
+  $url: String!
+) {
+  addToCart(username: $username, price: $price, name: $name, url: $url)
+}

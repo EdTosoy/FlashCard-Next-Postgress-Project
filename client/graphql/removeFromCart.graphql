@@ -1,0 +1,3 @@
+mutation RemoveFromCart($username:String!, $id:Float!){
+  removeFromCart(username: $username, id: $id)
+}

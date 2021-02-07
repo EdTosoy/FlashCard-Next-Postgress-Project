@@ -15,11 +15,11 @@ class LoginResponse {
 export class Login {
   @Mutation(() => LoginResponse)
   async login(
-    @Arg("username") username: string,
+    @Arg("email") email: string,
     @Arg("password") password: string,
     @Ctx() { res }: MyContext
   ) {
-    const user = await User.findOne({ where: { username: username } });
+    const user = await User.findOne({ where: { email: email } });
     if (!user) {
       throw new Error("User does not Exist");
     }

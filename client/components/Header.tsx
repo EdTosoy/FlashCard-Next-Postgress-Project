@@ -1,7 +1,12 @@
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
+import { useMeQuery, useLogoutMutation } from "../generated/graphql";
 
 export default function Header() {
+  const { data } = useMeQuery({
+    fetchPolicy: "network-only",
+  });
+  const [logout, { error }] = useLogoutMutation();
   const nav = [
     {
       name: "home",
@@ -25,7 +30,15 @@ export default function Header() {
       pathname: "/#contact",
     },
   ];
-  const icons = ["menu", "cart", "user-circle"];
+  const handleLogOut = async () => {
+    const response = await logout();
+    console.log(response);
+    window.location.reload();
+  };
+  if (data) {
+    console.log(data);
+    console.log(data.me);
+  }
   return (
     <header
       className="bg-white grid-container border-b sticky top-0 z-50  "
@@ -33,7 +46,7 @@ export default function Header() {
     >
       <main className="col-start-2 col-end-3 flex items-center justify-between py-4">
         <div className="">
-          <a href="#">PHONE</a>
+          <a href="/#">PHONE</a>
         </div>
         <div className="hidden md:flex ">
           {nav.map(({ name, pathname }) => (
@@ -53,11 +66,16 @@ export default function Header() {
               <box-icon name="cart"></box-icon>
             </Link>
           </div>
-          {true ? (
-            <button className="p-2 rounded-md hover:bg-gray-100" >LogOut</button>
+          {!data == null ? (
+            <button
+              className="p-2 rounded-md hover:bg-gray-100"
+              onClick={handleLogOut}
+            >
+              LogOut
+            </button>
           ) : (
             <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
-              <Link href="/login">
+              <Link href="/auth">
                 <box-icon name="user-circle"></box-icon>
               </Link>
             </div>

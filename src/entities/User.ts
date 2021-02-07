@@ -7,7 +7,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
+  OneToMany,
 } from "typeorm";
+import { CartList } from "./CartList";
 
 @ObjectType()
 @Entity("users")
@@ -36,4 +38,10 @@ export class User extends BaseEntity {
   @Field()
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToMany(() => CartList, (cartList: CartList) => cartList.user, {
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
+  })
+  cartList: CartList[];
 }
