@@ -23,7 +23,7 @@ export default function Features() {
     <section className="grid-container bg-gray-100 py-20 ">
       <main className="col-start-2 col-end-3 grid md:grid-cols-4 gap-4">
         {elements.map(({ name, icon }) => (
-          <div className=" text-center  py-5 px-10  bg-white">
+          <div className=" text-center  py-5 px-10  bg-white" key={name}>
             <div className="grid place-content-center mb-4 ">
               <box-icon name={icon} size="lg"></box-icon>
             </div>

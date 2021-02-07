@@ -17,7 +17,7 @@ export default function Header() {
     },
     {
       name: "blog",
-      pathname: "blog",
+      pathname: "/blog",
     },
 
     {
@@ -44,21 +44,55 @@ export default function Header() {
             </nav>
           ))}
         </div>
-        <div className="flex">
-          {icons.map((element) => (
-            <div
-              className={`${
-                element == "menu" && "md:hidden "
-              } grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
-              key={element}
-            >
+        <div className="flex items-center">
+          <div className="md:hidden grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
+            <box-icon name="menu"></box-icon>
+          </div>
+          <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
+            <Link href="/cart">
+              <box-icon name="cart"></box-icon>
+            </Link>
+          </div>
+          {true ? (
+            <button className="p-2 rounded-md hover:bg-gray-100" >LogOut</button>
+          ) : (
+            <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
               <Link href="/login">
-                <box-icon name={element}></box-icon>
+                <box-icon name="user-circle"></box-icon>
               </Link>
             </div>
-          ))}
+          )}
         </div>
       </main>
     </header>
   );
 }
+
+// {icons.map((element) => (
+//   <div
+//     className={`${
+//       element == "menu" && "md:hidden "
+//     }   grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
+//     key={element}
+//   >
+//     <Link href="/login">
+//       <box-icon name={element}></box-icon>
+//     </Link>
+//   </div>
+// ))}
+// <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
+//   <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
+//     <Link href="/login">
+//       <box-icon name={element}></box-icon>
+//     </Link>
+//   </div>
+//   <Link href="/login">
+//     <box-icon name={element}></box-icon>
+//   </Link>
+// </div>
+// <div
+//   className={`${
+//     element == "menu" && "md:hidden "
+//   }   grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
+//   key={element}
+// >
