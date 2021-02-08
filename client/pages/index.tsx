@@ -8,6 +8,10 @@ import { initializeApollo } from "lib/apolloClient";
 import Head from "next/head";
 import Header from "../components/Header";
 import Hero from "../components/Hero";
+import { getAccessToken, setAccessToken } from "../lib/accessToken";
+
+import { setContext } from "@apollo/client/link/context";
+import { useState, useEffect } from "react";
 
 export default function Home() {
   return (
@@ -23,7 +27,9 @@ export default function Home() {
   );
 }
 
+
 export async function getStaticProps() {
+  
   const apolloClient = initializeApollo();
 
   return {
@@ -33,3 +39,10 @@ export async function getStaticProps() {
     revalidate: 1,
   };
 }
+
+export const getStaticPaths = async () => {
+  return {
+    paths: ["/"],
+    fallback: true,
+  };
+};

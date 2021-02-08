@@ -20,6 +20,7 @@ config();
     cors({
       origin: "http://localhost:3000",
       credentials: true,
+      
     })
   );
 
@@ -28,7 +29,7 @@ config();
   });
   app.use(cookieParser());
   app.post("/refresh_token", async (req, res) => {
-    console.log(req.cookies);
+    console.log("cookies:", req.cookies);
     const token = req.cookies.bid;
 
     if (!token) {

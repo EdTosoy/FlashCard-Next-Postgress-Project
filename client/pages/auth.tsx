@@ -4,11 +4,9 @@ import { useMeQuery } from "../generated/graphql";
 import { useRouter } from "next/router";
 
 export default function login() {
-  const { data } = useMeQuery({
-    fetchPolicy: "network-only",
-  });
+  const { data } = useMeQuery();
   const router = useRouter();
-  if (!data == null) {
+  if (!data === null) {
     () => {
       router.push("/");
       window.location.reload();

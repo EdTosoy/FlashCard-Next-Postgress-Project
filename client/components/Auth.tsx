@@ -1,9 +1,6 @@
 import { FormEvent, useState } from "react";
-import {
-  useLoginMutation,
-  useRegisterMutation,
-} from "../generated/graphql";
-import { setAccessToken } from "../lib/accessToken";
+import { useLoginMutation, useRegisterMutation } from "../generated/graphql";
+import { setAccessToken, getAccessToken } from "../lib/accessToken";
 export default function Auth() {
   const [registration, setRegistration] = useState(false);
   const [email, setEmail] = useState("");
@@ -20,14 +17,13 @@ export default function Auth() {
         email,
       },
     });
-    if (response.data?.login) {
+    if (response.data && response.data.login) {
       setAccessToken(response.data.login.accessToken);
     }
 
     setEmail("");
     setPassword("");
     setUsername("");
-    console.log(response);
   };
   const handleRegisterSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -43,7 +39,6 @@ export default function Auth() {
     setEmail("");
     setPassword("");
     setUsername("");
-    console.log(response);
   };
 
   return (

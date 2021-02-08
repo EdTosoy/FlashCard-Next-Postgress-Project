@@ -5,5 +5,6 @@ export const setAccessToken = (token: string) => {
 };
 
 export const getAccessToken = () => {
+  console.log(accessToken)
   return accessToken;
 };

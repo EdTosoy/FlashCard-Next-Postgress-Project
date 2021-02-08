@@ -1,12 +1,15 @@
 import { useRouter } from "next/dist/client/router";
 import Link from "next/link";
-import { useMeQuery, useLogoutMutation } from "../generated/graphql";
+import { useMeQuery, useLogoutMutation, User } from "../generated/graphql";
+import { setAccessToken } from "../lib/accessToken";
 
 export default function Header() {
+  let router = useRouter();
   const { data } = useMeQuery({
     fetchPolicy: "network-only",
+    
   });
-  const [logout, { error }] = useLogoutMutation();
+  const [logout, { client }] = useLogoutMutation();
   const nav = [
     {
       name: "home",
@@ -30,14 +33,18 @@ export default function Header() {
       pathname: "/#contact",
     },
   ];
-  const handleLogOut = async () => {
-    const response = await logout();
-    console.log(response);
+  const handleLogOut = async (e: React.MouseEvent<HTMLElement>) => {
+    e.preventDefault();
+    await logout();
+    setAccessToken("");
+    await client.resetStore();
+    router.push("/");
     window.location.reload();
   };
+
+  let userLogedIn: any;
   if (data) {
-    console.log(data);
-    console.log(data.me);
+    userLogedIn = data.me;
   }
   return (
     <header
@@ -66,51 +73,22 @@ export default function Header() {
               <box-icon name="cart"></box-icon>
             </Link>
           </div>
-          {!data == null ? (
+          {userLogedIn ? (
+            <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
+              <Link href="/auth">
+                <box-icon name="user-circle"></box-icon>
+              </Link>
+            </div>
+          ) : (
             <button
               className="p-2 rounded-md hover:bg-gray-100"
               onClick={handleLogOut}
             >
               LogOut
             </button>
-          ) : (
-            <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
-              <Link href="/auth">
-                <box-icon name="user-circle"></box-icon>
-              </Link>
-            </div>
           )}
         </div>
       </main>
     </header>
   );
 }
-
-// {icons.map((element) => (
-//   <div
-//     className={`${
-//       element == "menu" && "md:hidden "
-//     }   grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
-//     key={element}
-//   >
-//     <Link href="/login">
-//       <box-icon name={element}></box-icon>
-//     </Link>
-//   </div>
-// ))}
-// <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
-//   <div className="grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full">
-//     <Link href="/login">
-//       <box-icon name={element}></box-icon>
-//     </Link>
-//   </div>
-//   <Link href="/login">
-//     <box-icon name={element}></box-icon>
-//   </Link>
-// </div>
-// <div
-//   className={`${
-//     element == "menu" && "md:hidden "
-//   }   grid place-content-center p-2 hover:bg-gray-200 cursor-pointer  rounded-full`}
-//   key={element}
-// >

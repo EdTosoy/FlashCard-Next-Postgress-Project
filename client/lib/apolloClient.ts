@@ -1,14 +1,39 @@
 import { useMemo } from "react";
-import { ApolloClient, HttpLink, InMemoryCache, NormalizedCacheObject } from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { getAccessToken } from "./accessToken";
+import {
+  ApolloClient,
+  createHttpLink,
+  InMemoryCache,
+  NormalizedCacheObject,
+} from "@apollo/client";
 
 let apolloClient: ApolloClient<NormalizedCacheObject>;
 
+const httpLink = createHttpLink({
+  uri: "http://localhost:4000/graphql",
+  credentials: "include",
+});
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = getAccessToken();
+  // return the headers to the context so httpLink can read them
+  console.log(token);
+  if (token) {
+    return {
+      headers: {
+        ...headers,
+        authorization: `bearer ${token}`,
+      },
+    };
+  }
+});
+
 function createApolloClient() {
   return new ApolloClient({
-    ssrMode: true,
-    link: new HttpLink({
-      uri: "http://localhost:4000/graphql", // Add your Slash endpoint here
-    }),
+    ssrMode: typeof window === "undefined",
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });
 }
@@ -32,7 +57,7 @@ export function initializeApollo(initialState = null) {
   return _apolloClient;
 }
 
-export function useApollo(initialState) {
+export function useApollo(initialState: any) {
   const store = useMemo(() => initializeApollo(initialState), [initialState]);
   return store;
 }
